@@ -1,6 +1,12 @@
 const routes = require('express').Router();
-const {getAllProducts} = require('../controller/productController')
+const products = require('../controller/productController')
 
-routes.get('/products',getAllProducts)
+
+//Products routes
+routes.post('/product/new', products.createProduct)
+routes.get('/products',products.getAllProducts)
+routes.put('/updateProduct/:id',products.updateProduct)
+routes.delete('/deleteProduct/:id',products.deleteProduct)
+routes.get('/getProductById/:id',products.getProductById)
 
 module.exports = routes

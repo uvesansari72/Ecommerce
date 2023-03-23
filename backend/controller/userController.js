@@ -88,3 +88,37 @@ exports.logoutUser = async (req, res) => {
     });
   }
 };
+
+//forgot password
+exports.forgotPassword = async(req,res)=>{
+
+  try {
+    
+    const {email} = req.body;
+
+    const user = User.findOne({email})
+
+    if(!user)
+    {
+      return res.status(404).json({
+        success:false,
+        message:`User not found with email ${email}`
+      })
+    }
+
+    //get resetpassword token
+
+     const resetToken =  user.getResetPasswordToken();
+
+    //  getResetPasswordToken ye function me model resetPasswordToken,resetPasswordExpire ye sirf add hua he save nahi hua he to isko save krna padega
+    await user.save({validateBeforeSave:false});
+
+
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      error,
+    });
+  }
+}

@@ -24,10 +24,12 @@ exports.createProduct = async (req, res, next) => {
 exports.getAllProducts = async (req, res) => {
   try {
     const products = await Product.find();
+    const productCount = await Product.count();
 
     return res.status(200).json({
       success: true,
       products,
+      productCount
     });
   } catch (error) {
     console.log(error);

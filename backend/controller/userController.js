@@ -1,6 +1,7 @@
 const User = require("../model/userModel");
 const sendToken = require("../utils/jwtToken");
 
+//register user
 exports.registerUser = async (req, res) => {
   try {
     const { name, email, password } = req.body;
@@ -16,8 +17,8 @@ exports.registerUser = async (req, res) => {
     });
 
     //user User model ka refrence he isliye user object ka use krke User model ki koi bhi method ko call kara skte he
-    
-    sendToken(user,201,res)
+
+    sendToken(user, 201, res);
   } catch (error) {
     console.log(error);
     return res.status(500).json({
@@ -54,10 +55,31 @@ exports.loginUser = async (req, res) => {
             message: "Invalid email or passsword",
           });
         } else {
-          sendToken(user,200,res)
+          sendToken(user, 200, res);
         }
       }
     }
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      error,
+    });
+  }
+};
+
+//logout user
+exports.logoutUser = async (req, res) => {
+  try {
+    res.cookie("token", null, {
+      expires: new Date(Date.now()),
+      httpOnly: true,
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: "Logut successfully",
+    });
   } catch (error) {
     console.log(error);
     return res.status(500).json({
